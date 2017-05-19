@@ -1,0 +1,4 @@
+backups
+volumes/db/data
+.env
+volumes/web/config.php
