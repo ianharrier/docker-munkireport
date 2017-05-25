@@ -20,11 +20,11 @@ RUN set -ex \
         && apk --no-cache add \
                curl \
         && curl --location \
-                --output /etc/apk/keys/sgerrand.rsa.pub \
-                https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
+               --output /etc/apk/keys/sgerrand.rsa.pub \
+               https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
         && curl --location \
-                --output /tmp/glibc-"${GLIBC_VERSION}".apk \
-                https://github.com/sgerrand/alpine-pkg-glibc/releases/download/"${GLIBC_VERSION}"/glibc-"${GLIBC_VERSION}".apk \
+               --output /tmp/glibc-"${GLIBC_VERSION}".apk \
+               https://github.com/sgerrand/alpine-pkg-glibc/releases/download/"${GLIBC_VERSION}"/glibc-"${GLIBC_VERSION}".apk \
         && apk --no-cache add \
                /tmp/glibc-"${GLIBC_VERSION}".apk \
         && rm /tmp/glibc-"${GLIBC_VERSION}".apk \

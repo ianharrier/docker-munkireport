@@ -6,19 +6,19 @@ START_TIME=$(date +%s)
 cd "$HOST_PATH"
 
 if [ ! $1 ]; then
-  echo "[E] Specify the name of a backup file to restore. Example:"
-  echo "      docker-compose exec backup app-restore 20170501T031500+0000.tar.gz"
-  exit 1
+    echo "[E] Specify the name of a backup file to restore. Example:"
+    echo "      docker-compose exec backup app-restore 20170501T031500+0000.tar.gz"
+    exit 1
 fi
 
 if [ ! -e "backups/$1" ]; then
-  echo "[E] The file '$1' does not exist."
-  exit 1
+    echo "[E] The file '$1' does not exist."
+    exit 1
 fi
 
 if [ -d backups/tmp_restore ]; then
-  echo "[W] Cleaning up from a previously-failed restore."
-  rm -rf backups/tmp_restore
+    echo "[W] Cleaning up from a previously-failed restore."
+    rm -rf backups/tmp_restore
 fi
 
 BACKUP_FILE="$1"
@@ -46,8 +46,8 @@ docker-compose up -d db &>/dev/null
 echo "[I] Waiting for MySQL container to complete initialization tasks."
 DB_READY=false
 while [ "$DB_READY" = "false" ]; do
-  sleep 1
-  nc -z db 3306 &>/dev/null && DB_READY=true || DB_READY=false
+    sleep 1
+    nc -z db 3306 &>/dev/null && DB_READY=true || DB_READY=false
 done
 
 echo "[I] Restoring MySQL database."

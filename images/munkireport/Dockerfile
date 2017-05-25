@@ -62,7 +62,13 @@ EXPOSE 80
 
 CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
 
+#-------------------------------------------------------------------------------
+#  Scripts
+#-------------------------------------------------------------------------------
+
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
 RUN set -ex \
         && chmod +x /usr/local/bin/docker-entrypoint
+
 ENTRYPOINT ["docker-entrypoint"]
