@@ -35,7 +35,7 @@ services:
             args:
                 - GLIBC_VERSION=2.25-r0
                 - COMPOSE_VERSION=1.13.0
-        image: ianharrier/munkireport-backup:1.0.4
+        image: ianharrier/munkireport-backup:1.0.5
         restart: unless-stopped
         environment:
             - OPERATION=${BACKUP_OPERATION}
