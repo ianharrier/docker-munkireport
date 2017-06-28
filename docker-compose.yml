@@ -18,7 +18,7 @@ services:
             - MYSQL_USER=${DB_MYSQL_USER}
             - MYSQL_PASSWORD=${DB_MYSQL_PASSWORD}
         volumes:
-            - ./volumes/web/config.php:/srv/www/app/config.php:ro
+            - ./volumes/web/config.php:/srv/www/app/config.php
     db:
         image: mysql
         restart: unless-stopped
