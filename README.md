@@ -58,7 +58,7 @@ This is more than just a MunkiReport image. Included in this repo is everything 
     sudo cp volumes/web/config.template.php volumes/web/config.php
     ```
 
-7. Using a text editor, make modifications to the `.env` file to suit your environment, using [config_default.php](https://github.com/munkireport/munkireport-php/blob/master/config_default.php) as a reference.
+7. Using a text editor, make modifications to the `config.php` file to suit your environment, using [config_default.php](https://github.com/munkireport/munkireport-php/blob/master/config_default.php) as a reference.
 
     ```shell
     sudo vi volumes/web/config.php
