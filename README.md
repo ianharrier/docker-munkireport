@@ -85,7 +85,7 @@ This is more than just a MunkiReport image. Included in this repo is everything 
 2. Run the upgrade script.
 
     ```shell
-    ./app-upgrade.sh
+    ./scripts/app-upgrade.sh
     ```
 
 ### Running a one-time manual backup
