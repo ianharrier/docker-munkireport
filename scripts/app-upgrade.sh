@@ -29,7 +29,7 @@ docker-compose up -d backup &>/dev/null
 
 echo "[I] Restoring application stack to most recent backup."
 cd backups
-LATEST_BACKUP=$(ls -1tr *.tar.gz 2>/dev/null | head -n 1)
+LATEST_BACKUP=$(ls -1tr *.tar.gz 2>/dev/null | tail -n 1)
 cd ..
 docker-compose exec backup app-restore $LATEST_BACKUP &>/dev/null
 
