@@ -74,7 +74,7 @@ This is more than just a MunkiReport image. Included in this repo is everything 
 
 ### Upgrading
 
-**Warning: the upgrade process will immediately stop and upgrade the current production environment. The application stack will be unavailable for up to a few minutes while it is upgraded.**
+**Warning: the upgrade process will immediately stop and upgrade the current production environment. The application stack will be unavailable while it is being upgraded.**
 
 1. Set the working directory to the root of the repo.
 
