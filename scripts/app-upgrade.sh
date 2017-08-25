@@ -22,7 +22,10 @@ echo "=== Pulling changes from repo. ===========================================
 git pull
 
 echo "=== Updating environment file. ================================================="
-sed -i .bak "s/^MUNKIREPORT_VERSION=.*/MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env.template | cut -d = -f 2)/g" .env
+OLD_MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env | cut -d = -f 2)
+NEW_MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env.template | cut -d = -f 2)
+echo "[I] Upgrading MunkiReport from '$OLD_MUNKIREPORT_VERSION' to '$NEW_MUNKIREPORT_VERSION'."
+sed -i .bak "s/^MUNKIREPORT_VERSION=.*/MUNKIREPORT_VERSION=$NEW_MUNKIREPORT_VERSION/g" .env
 
 echo "=== Building new images. ======================================================="
 docker-compose build --pull
