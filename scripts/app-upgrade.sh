@@ -3,36 +3,43 @@ set -e
 
 START_TIME=$(date +%s)
 
-echo "[I] Shutting down web container."
-docker-compose stop web &>/dev/null
+echo "=== Shutting down web container. ==============================================="
+docker-compose stop web
 
-echo "[I] Backing up application stack."
-docker-compose exec backup app-backup &>/dev/null
+echo "=== Starting database container. ==============================================="
+docker-compose up -d db
 
-echo "[I] Removing currnet application stack."
-docker-compose down &>/dev/null
+echo "=== Starting backup container. ================================================="
+docker-compose up -d backup
 
-echo "[I] Pulling changes from repo."
-git pull &>/dev/null
+echo "=== Backing up application stack. =============================================="
+docker-compose exec backup app-backup
 
-echo "[I] Updating environment file."
+echo "=== Removing currnet application stack. ========================================"
+docker-compose down
+
+echo "=== Pulling changes from repo. ================================================="
+git pull
+
+echo "=== Updating environment file. ================================================="
 sed -i .bak "s/^MUNKIREPORT_VERSION=.*/MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env.template | cut -d = -f 2)/g" .env
 
-echo "[I] Building new images."
-docker-compose build --pull &>/dev/null
+echo "=== Building new images. ======================================================="
+docker-compose build --pull
 
-echo "[I] Pulling updated database image."
-docker-compose pull db &>/dev/null
+echo "=== Pulling updated database image. ============================================"
+docker-compose pull db
 
-echo "[I] Creating and starting backup container."
-docker-compose up -d backup &>/dev/null
+echo "=== Starting backup container. ================================================="
+docker-compose up -d backup
 
-echo "[I] Restoring application stack to most recent backup."
+echo "=== Restoring application stack to most recent backup. ========================="
 cd backups
-LATEST_BACKUP=$(ls -1tr *.tar.gz 2>/dev/null | tail -n 1)
+LATEST_BACKUP=$(ls -1tr *.tar.gz 2> /dev/null | tail -n 1)
 cd ..
-docker-compose exec backup app-restore $LATEST_BACKUP &>/dev/null
+docker-compose exec backup app-restore $LATEST_BACKUP
 
 END_TIME=$(date +%s)
 
-echo "[I] Script complete. Time elapsed: $((END_TIME-START_TIME)) seconds."
+echo "=== Upgrade complete. =========================================================="
+echo "[I] Time elapsed: $((END_TIME-START_TIME)) seconds."
