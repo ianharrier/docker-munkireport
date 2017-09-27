@@ -6,8 +6,7 @@ START_TIME=$(date +%s)
 echo "=== Shutting down web container. ==============================================="
 docker-compose stop web
 
-echo "=== Starting database container. ==============================================="
-docker-compose up -d db
+# The backup process will fail if the db container is not started.
 
 echo "=== Starting backup container. ================================================="
 docker-compose up -d backup
