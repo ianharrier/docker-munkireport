@@ -26,6 +26,11 @@ NEW_MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env.template | cut -d = -f
 echo "[I] Upgrading MunkiReport from '$OLD_MUNKIREPORT_VERSION' to '$NEW_MUNKIREPORT_VERSION'."
 sed -i.bak "s/^MUNKIREPORT_VERSION=.*/MUNKIREPORT_VERSION=$NEW_MUNKIREPORT_VERSION/g" .env
 
+echo "=== Deleting old images. ======================================================="
+IMAGE_BACKUP=$(docker images ianharrier/munkireport-backup -q)
+IMAGE_WEB=$(docker images ianharrier/munkireport -q)
+docker rmi $IMAGE_BACKUP $IMAGE_WEB
+
 echo "=== Building new images. ======================================================="
 docker-compose build --pull
 
