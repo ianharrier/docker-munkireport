@@ -18,7 +18,7 @@ services:
             - MYSQL_USER=${DB_MYSQL_USER}
             - MYSQL_PASSWORD=${DB_MYSQL_PASSWORD}
         volumes:
-            - ./volumes/web/config.php:/srv/www/app/config.php
+            - ./volumes/web/config.php:/srv/www/app/config.php:Z
     db:
         image: mysql
         restart: unless-stopped
@@ -28,7 +28,7 @@ services:
             - MYSQL_USER=${DB_MYSQL_USER}
             - MYSQL_PASSWORD=${DB_MYSQL_PASSWORD}
         volumes:
-            - ./volumes/db/data:/var/lib/mysql
+            - ./volumes/db/data:/var/lib/mysql:Z
     backup:
         build:
             context: ./images/backup
@@ -47,3 +47,5 @@ services:
         volumes:
             - ./:${PWD}
             - /var/run/docker.sock:/var/run/docker.sock
+        security_opt:
+            - label:disable
