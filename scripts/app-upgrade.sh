@@ -24,7 +24,7 @@ echo "=== Updating environment file. ===========================================
 OLD_MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env | cut -d = -f 2)
 NEW_MUNKIREPORT_VERSION=$(grep ^MUNKIREPORT_VERSION= .env.template | cut -d = -f 2)
 echo "[I] Upgrading MunkiReport from '$OLD_MUNKIREPORT_VERSION' to '$NEW_MUNKIREPORT_VERSION'."
-sed -i.bak "s/^MUNKIREPORT_VERSION=.*/MUNKIREPORT_VERSION=$NEW_MUNKIREPORT_VERSION/g" .env
+sed -i.bak -e "s/^MUNKIREPORT_VERSION=.*/MUNKIREPORT_VERSION=$NEW_MUNKIREPORT_VERSION/g" .env
 
 echo "=== Deleting old images. ======================================================="
 IMAGE_BACKUP=$(docker images ianharrier/munkireport-backup -q)
