@@ -20,7 +20,7 @@ services:
         volumes:
             - ./volumes/web/config.php:/srv/www/app/config.php:Z
     db:
-        image: mysql
+        image: mysql:5.7
         restart: unless-stopped
         environment:
             - MYSQL_ROOT_PASSWORD=${DB_MYSQL_ROOT_PASSWORD}
