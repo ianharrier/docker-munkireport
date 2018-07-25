@@ -6,7 +6,7 @@ START_TIME=$(date +%s)
 
 cd "$HOST_PATH"
 
-if [ "$OPERATION" = "disable" ]; then
+if [ "$BACKUP_OPERATION" = "disable" ]; then
     echo "[W] Backups are disabled."
 else
     if [ ! -d backups ]; then
@@ -23,7 +23,7 @@ else
     mkdir -p backups/tmp_backup
 
     echo "[I] Backing up MunkiReport database."
-    docker exec -i "$(docker-compose ps -q db)" sh -c 'exec mysqldump --databases "$MYSQL_DATABASE" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" 2>/dev/null' > backups/tmp_backup/db.sql
+    mysqldump --host=db --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --databases ${MYSQL_DATABASE} > backups/tmp_backup/db.sql
 
     if [ -f volumes/web/config.php ]; then
         echo "[I] Backing up MunkiReport configuration file."
@@ -39,7 +39,7 @@ else
     echo "[I] Removing working directory."
     rm -rf backups/tmp_backup
 
-    EXPIRED_BACKUPS=$(ls -1tr backups/*.tar.gz 2>/dev/null | head -n -$RETENTION)
+    EXPIRED_BACKUPS=$(ls -1tr backups/*.tar.gz 2>/dev/null | head -n -$BACKUP_RETENTION)
     if [ "$EXPIRED_BACKUPS" ]; then
         echo "[I] Cleaning up expired backup(s):"
         for BACKUP in $EXPIRED_BACKUPS; do
