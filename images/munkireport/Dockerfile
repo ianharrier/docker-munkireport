@@ -22,16 +22,38 @@ RUN set -ex \
         && apk --no-cache add \
                php7-apache2 \
                php7 \
+               php7-curl \
                php7-dom \
                php7-json \
                php7-ldap \
+               php7-mbstring \
+               php7-mcrypt \
                php7-mysqli \
                php7-pdo \
                php7-pdo_mysql \
+               php7-phar \
                php7-session \
+               php7-simplexml \
                php7-soap \
+               php7-tokenizer \
+               php7-xml \
+               php7-xmlwriter \
+               php7-zlib \
         && sed -i 's/^expose_php = .*/expose_php = Off/g' /etc/php7/php.ini \
         && sed -i 's/DirectoryIndex /DirectoryIndex index.php /g' /etc/apache2/httpd.conf
+
+#-------------------------------------------------------------------------------
+#  Composer (https://github.com/composer/composer)
+#-------------------------------------------------------------------------------
+
+RUN set -ex \
+        && apk --no-cache add \
+               curl \
+        && curl --location --retry 3 \
+               https://getcomposer.org/installer \
+             | php -- --install-dir=/usr/local/bin --filename=composer \
+        && apk --no-cache del \
+               curl
 
 #-------------------------------------------------------------------------------
 #  MunkiReport-PHP (https://github.com/munkireport/munkireport-php)
@@ -48,10 +70,15 @@ RUN set -ex \
         && curl --location --retry 3 \
                https://github.com/munkireport/munkireport-php/archive/v${MUNKIREPORT_VERSION}.tar.gz \
              | tar -xz --strip-components=1 --no-same-owner \
-        && sed -i 's|/var/www/localhost/htdocs|/srv/www/app|g' /etc/apache2/httpd.conf \
+        && sed -i 's|/var/www/localhost/htdocs|/srv/www/app/public|g' /etc/apache2/httpd.conf \
         && sed -i 's/^#LoadModule rewrite_module /LoadModule rewrite_module /g' /etc/apache2/httpd.conf \
         && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/httpd.conf \
         && sed -i 's/^allow_url_include = .*/allow_url_include = On/g' /etc/php7/php.ini \
+        && composer install --no-dev \
+        && composer require adldap2/adldap2 --update-no-dev \
+        && composer require onelogin/php-saml --update-no-dev \
+        && composer dumpautoload -o \
+        && rm -rf /root/.composer/cache \
         && apk --no-cache del \
                curl \
                tar
